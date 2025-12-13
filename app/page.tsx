@@ -1,65 +1,139 @@
-import Image from "next/image";
+import { User, ChevronRight, Gift, Zap } from 'lucide-react';
+import Link from 'next/link';
+import Header from '../components/layout/Header';
+import Topbar from '../components/layout/Topbar';
+import Footer from '../components/layout/Footer';
+import CategorySidebar from '../components/homepage/CategorySidebar';
+import HeroBanner from '../components/homepage/HeroBanner';
+import DealsSection from '../components/homepage/DealsSection';
+import HotOffers from '../components/homepage/HotOffers';
+import QuoteRequestSection from '../components/homepage/QuoteRequestSection';
+import NewsletterSection from '../components/homepage/NewsletterSection';
+import RecommendedItems from '../components/homepage/RecommendedItems';
+import ExtraServices from '../components/homepage/ExtraServices';
+import SuppliersByRegion from '../components/homepage/SuppliersByRegion';
+import CategoryBlock from '../components/homepage/CategoryBlock';
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <Topbar />
+      <Header />
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        {/* Hero Section: Sidebar + Banner + User Panel */}
+        <section className="bg-white rounded-xl lg:rounded-2xl border border-gray-100 p-4 lg:p-5 shadow-sm">
+          <div className="flex gap-4 lg:gap-5">
+            {/* Category Sidebar - Hidden on mobile */}
+            <CategorySidebar />
+
+            {/* Hero Banner - Flexible width */}
+            <div className="flex-1 min-w-0">
+              <HeroBanner />
+            </div>
+
+            {/* User Panel - Hidden on mobile/tablet */}
+            <div className="w-56 hidden xl:flex flex-col gap-3 flex-shrink-0">
+              {/* User Greeting Card */}
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
+                    <User className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-800">Hi, Guest</p>
+                    <p className="text-xs text-gray-500">Welcome back!</p>
+                  </div>
+                </div>
+                <Link href="/register">
+                  <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm py-2.5 rounded-lg mb-2 hover:from-blue-700 hover:to-blue-800 transition-all font-medium shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30">
+                    Join Now
+                  </button>
+                </Link>
+                <Link href="/login">
+                  <button className="w-full bg-white text-blue-600 border-2 border-blue-200 text-sm py-2 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all font-medium">
+                    Log In
+                  </button>
+                </Link>
+              </div>
+
+              {/* Promo Cards */}
+              <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl p-4 flex-1 flex flex-col justify-center cursor-pointer hover:shadow-lg hover:shadow-orange-500/30 transition-all group">
+                <div className="flex items-center gap-2 mb-1">
+                  <Gift className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Get $10 off</span>
+                </div>
+                <p className="text-xs text-white/80">With a new supplier</p>
+                <ChevronRight className="w-4 h-4 mt-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+
+              <div className="bg-gradient-to-br from-teal-500 to-emerald-600 text-white rounded-xl p-4 flex-1 flex flex-col justify-center cursor-pointer hover:shadow-lg hover:shadow-teal-500/30 transition-all group">
+                <div className="flex items-center gap-2 mb-1">
+                  <Zap className="w-5 h-5" />
+                  <span className="font-semibold text-sm">Quick RFQ</span>
+                </div>
+                <p className="text-xs text-white/80">Send quotes instantly</p>
+                <ChevronRight className="w-4 h-4 mt-2 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Deals Section */}
+        <section>
+          <DealsSection />
+        </section>
+
+        {/* Hot Offers */}
+        <section>
+          <HotOffers />
+        </section>
+
+        {/* Category Block - Home and Outdoor */}
+        <section>
+          <CategoryBlock
+            title="Home and Outdoor"
+            bgImage="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=1000&auto=format&fit=crop"
+            href="/categories/home-outdoor"
+          />
+        </section>
+
+        {/* Category Block - Consumer Electronics */}
+        <section>
+          <CategoryBlock
+            title="Consumer Electronics"
+            bgImage="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1000&auto=format&fit=crop"
+            href="/categories/electronics"
+          />
+        </section>
+
+        {/* Quote Request Section */}
+        <section>
+          <QuoteRequestSection />
+        </section>
+
+        {/* Recommended Items */}
+        <section>
+          <RecommendedItems />
+        </section>
+
+        {/* Extra Services */}
+        <section>
+          <ExtraServices />
+        </section>
+
+        {/* Suppliers by Region */}
+        <section>
+          <SuppliersByRegion />
+        </section>
       </main>
+
+      {/* Footer Area */}
+      <div className="mt-12">
+        <NewsletterSection />
+        <Footer />
+      </div>
     </div>
   );
 }
