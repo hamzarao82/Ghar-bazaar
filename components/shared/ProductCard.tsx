@@ -6,6 +6,7 @@ import { Star, Heart, ShoppingCart, Eye } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { getProductById } from '@/data/products';
+import Skeleton from './Skeleton';
 
 interface ProductCardProps {
     id: string | number;
@@ -34,6 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
     const [isHovered, setIsHovered] = useState(false);
     const [addedToCart, setAddedToCart] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState(false);
 
     const { addToCart, isInCart } = useCart();
     const { toggleWishlist, isInWishlist } = useWishlist();
@@ -81,9 +83,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 <div className="group bg-white rounded-xl border border-gray-100 p-4 flex gap-4 hover:shadow-lg hover:border-blue-100 transition-all duration-300">
                     {/* Image */}
                     <div className="w-32 h-32 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 relative">
-                        <img src={image} alt={name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        {!imageLoaded && <Skeleton className="absolute inset-0 z-10" />}
+                        <img
+                            src={image}
+                            alt={name}
+                            onLoad={() => setImageLoaded(true)}
+                            className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                        />
                         {discount > 0 && (
-                            <div className="absolute top-2 left-2 px-2 py-0.5 bg-rose-500 text-white text-xs font-bold rounded">
+                            <div className="absolute top-2 left-2 px-2 py-0.5 bg-rose-500 text-white text-xs font-bold rounded z-20">
                                 -{discount}%
                             </div>
                         )}
@@ -151,14 +159,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
             >
                 {/* Image Container */}
                 <div className="relative aspect-square overflow-hidden bg-gray-100">
+                    {!imageLoaded && <Skeleton className="absolute inset-0 z-10" />}
                     <img
                         src={image}
                         alt={name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        onLoad={() => setImageLoaded(true)}
+                        className={`w-full h-full object-cover group-hover:scale-105 transition-all duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
                     />
 
                     {/* Badges */}
-                    <div className="absolute top-3 left-3 flex flex-col gap-1">
+                    <div className="absolute top-3 left-3 flex flex-col gap-1 z-20">
                         {discount > 0 && (
                             <span className="px-2 py-0.5 bg-gradient-to-r from-rose-500 to-orange-500 text-white text-xs font-bold rounded-md shadow">
                                 -{discount}%
@@ -175,7 +185,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                     <button
                         onClick={handleToggleFavorite}
                         className={`
-              absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition-all
+              absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition-all z-20
               ${isFavorite
                                 ? 'bg-rose-500 text-white'
                                 : 'bg-white text-gray-400 hover:text-rose-500'
@@ -187,7 +197,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
                     {/* Quick Actions Overlay */}
                     <div className={`
-            absolute inset-x-3 bottom-3 flex gap-2 transition-all duration-300
+            absolute inset-x-3 bottom-3 flex gap-2 transition-all duration-300 z-20
             ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
           `}>
                         <button
@@ -242,3 +252,4 @@ const ProductCard: React.FC<ProductCardProps> = ({
 };
 
 export default ProductCard;
+

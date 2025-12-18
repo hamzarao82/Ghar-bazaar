@@ -5,6 +5,7 @@ import { CartProvider } from './CartContext';
 import { AuthProvider } from './AuthContext';
 import { WishlistProvider } from './WishlistContext';
 import { ReviewsProvider } from './ReviewsContext';
+import { ToastProvider } from './ToastContext';
 
 interface ProvidersProps {
     children: ReactNode;
@@ -16,15 +17,17 @@ interface ProvidersProps {
  */
 export const Providers: React.FC<ProvidersProps> = ({ children }) => {
     return (
-        <AuthProvider>
-            <CartProvider>
-                <WishlistProvider>
-                    <ReviewsProvider>
-                        {children}
-                    </ReviewsProvider>
-                </WishlistProvider>
-            </CartProvider>
-        </AuthProvider>
+        <ToastProvider>
+            <AuthProvider>
+                <CartProvider>
+                    <WishlistProvider>
+                        <ReviewsProvider>
+                            {children}
+                        </ReviewsProvider>
+                    </WishlistProvider>
+                </CartProvider>
+            </AuthProvider>
+        </ToastProvider>
     );
 };
 

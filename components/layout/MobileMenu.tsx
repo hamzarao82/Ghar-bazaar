@@ -3,6 +3,7 @@
 import { X, User, ShoppingCart, Heart, Home, Grid, Settings, HelpCircle, LogIn, UserPlus, ChevronRight, Phone, Mail, Globe } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
+import { categories } from '@/data/categories';
 
 interface MobileMenuProps {
     isOpen: boolean;
@@ -28,11 +29,6 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
         { icon: Heart, label: 'Wishlist', href: '/wishlist', badge: '5' },
         { icon: ShoppingCart, label: 'My Cart', href: '/cart', badge: '12' },
         { icon: User, label: 'My Orders', href: '/orders' },
-    ];
-
-    const categories = [
-        'Electronics', 'Fashion', 'Home & Garden', 'Sports & Outdoor',
-        'Automotive', 'Beauty & Health', 'Toys & Games', 'Office Supplies'
     ];
 
     return (
@@ -135,14 +131,17 @@ const MobileMenu = ({ isOpen, onClose }: MobileMenuProps) => {
                         <p className="px-5 text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
                             Popular Categories
                         </p>
-                        {categories.map((cat) => (
+                        {categories.slice(0, 10).map((cat: any) => (
                             <Link
-                                key={cat}
-                                href={`/categories/${cat.toLowerCase().replace(/ & /g, '-')}`}
+                                key={cat.id || cat}
+                                href={`/categories/${cat.slug || cat.toLowerCase().replace(/ & /g, '-')}`}
                                 className="flex items-center justify-between px-5 py-2.5 text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                                 onClick={onClose}
                             >
-                                <span className="text-sm">{cat}</span>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-lg">{cat.icon}</span>
+                                    <span className="text-sm">{cat.name || cat}</span>
+                                </div>
                                 <ChevronRight className="w-4 h-4 text-gray-400" />
                             </Link>
                         ))}

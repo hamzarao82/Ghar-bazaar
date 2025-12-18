@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { User, AuthState, Address } from '@/types';
+import { useToast } from './ToastContext';
 
 // ==========================================
 // Types
@@ -158,6 +159,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     }, [state.user]);
 
+    const { showToast } = useToast();
+
     // Login function
     const login = async (email: string, password: string): Promise<boolean> => {
         dispatch({ type: 'LOGIN_START' });
@@ -170,6 +173,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
         if (storedUser && storedUser.password === password) {
             dispatch({ type: 'LOGIN_SUCCESS', payload: storedUser.user });
+            showToast(`Welcome back, ${storedUser.user.firstName}!`, 'success');
             return true;
         }
 
@@ -187,6 +191,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         };
 
         dispatch({ type: 'LOGIN_SUCCESS', payload: demoUser });
+        showToast('Logged in successfully!', 'success');
         return true;
     };
 
@@ -200,6 +205,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Check if email already exists
         if (mockUsers.has(userData.email.toLowerCase())) {
             dispatch({ type: 'LOGIN_FAILURE' });
+            showToast('Email already exists', 'error');
             return false;
         }
 
@@ -224,17 +230,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         });
 
         dispatch({ type: 'LOGIN_SUCCESS', payload: newUser });
+        showToast('Registration successful!', 'success');
         return true;
     };
 
     // Logout function
     const logout = () => {
         dispatch({ type: 'LOGOUT' });
+        showToast('Logged out successfully', 'info');
     };
 
     // Update profile
     const updateProfile = (updates: Partial<User>) => {
         dispatch({ type: 'UPDATE_PROFILE', payload: updates });
+        showToast('Profile updated!', 'success');
     };
 
     // Add address

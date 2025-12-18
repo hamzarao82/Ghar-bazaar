@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { useWishlist } from '@/context/WishlistContext';
 import { useAuth } from '@/context/AuthContext';
+import { categories } from '@/data/categories';
 
 const Header = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -71,22 +72,35 @@ const Header = () => {
                             `}>
                                 {/* Category Dropdown */}
                                 <div className="relative group">
-                                    <button className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 whitespace-nowrap transition-colors border-r border-gray-200">
-                                        <span>All Categories</span>
-                                        <ChevronDown className="w-4 h-4" />
-                                    </button>
+                                    <Link href="/categories">
+                                        <button className="px-4 py-3 flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 whitespace-nowrap transition-colors border-r border-gray-200">
+                                            <span>All Categories</span>
+                                            <ChevronDown className="w-4 h-4" />
+                                        </button>
+                                    </Link>
 
                                     {/* Dropdown Menu - Show on hover */}
                                     <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                        {['Electronics', 'Fashion', 'Home & Garden', 'Sports', 'Automotive'].map((cat) => (
+                                        {categories.slice(0, 8).map((cat: any) => (
                                             <Link
-                                                key={cat}
-                                                href={`/categories/${cat.toLowerCase().replace(/ & /g, '-')}`}
+                                                key={cat.id}
+                                                href={`/categories/${cat.slug}`}
                                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                                             >
-                                                {cat}
+                                                <div className="flex items-center gap-3">
+                                                    <span className="text-lg">{cat.icon}</span>
+                                                    <span>{cat.name}</span>
+                                                </div>
                                             </Link>
                                         ))}
+                                        <div className="border-t border-gray-100 mt-2 pt-2">
+                                            <Link
+                                                href="/categories"
+                                                className="block px-4 py-2 text-sm text-blue-600 font-semibold hover:bg-blue-50 transition-colors"
+                                            >
+                                                View All Categories
+                                            </Link>
+                                        </div>
                                     </div>
                                 </div>
 

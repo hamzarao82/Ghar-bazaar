@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Topbar from '@/components/layout/Topbar';
 import Footer from '@/components/layout/Footer';
+import EmptyState from '@/components/shared/EmptyState';
 import { useWishlist } from '@/context/WishlistContext';
 import { useCart } from '@/context/CartContext';
 
@@ -18,24 +19,17 @@ export default function WishlistPage() {
 
     if (items.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 flex flex-col">
                 <Topbar />
                 <Header />
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <div className="text-center">
-                        <div className="w-24 h-24 mx-auto mb-6 bg-rose-50 rounded-full flex items-center justify-center">
-                            <Heart className="w-12 h-12 text-rose-300" />
-                        </div>
-                        <h1 className="text-2xl font-bold text-gray-900 mb-3">Your wishlist is empty</h1>
-                        <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                            Save items you love by clicking the heart icon on any product. They'll appear here for easy access!
-                        </p>
-                        <Link href="/">
-                            <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/25">
-                                Explore Products
-                            </button>
-                        </Link>
-                    </div>
+                <main className="flex-1 flex items-center justify-center">
+                    <EmptyState
+                        icon={Heart}
+                        title="Your wishlist is empty"
+                        description="Save items you love by clicking the heart icon on any product. They'll appear here for easy access!"
+                        actionText="Explore Products"
+                        actionHref="/"
+                    />
                 </main>
                 <Footer />
             </div>

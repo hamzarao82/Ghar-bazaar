@@ -1,18 +1,54 @@
 import { User, ChevronRight, Gift, Zap } from 'lucide-react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import Header from '../components/layout/Header';
 import Topbar from '../components/layout/Topbar';
 import Footer from '../components/layout/Footer';
 import CategorySidebar from '../components/homepage/CategorySidebar';
 import HeroBanner from '../components/homepage/HeroBanner';
-import DealsSection from '../components/homepage/DealsSection';
-import HotOffers from '../components/homepage/HotOffers';
-import QuoteRequestSection from '../components/homepage/QuoteRequestSection';
-import NewsletterSection from '../components/homepage/NewsletterSection';
-import RecommendedItems from '../components/homepage/RecommendedItems';
-import ExtraServices from '../components/homepage/ExtraServices';
-import SuppliersByRegion from '../components/homepage/SuppliersByRegion';
-import CategoryBlock from '../components/homepage/CategoryBlock';
+import LazySection from '../components/shared/LazySection';
+import {
+  DealsSectionSkeleton,
+  HotOffersSkeleton,
+  CategoryBlockSkeleton,
+  QuoteRequestSkeleton,
+  ProductGridSkeleton,
+  ExtraServicesSkeleton,
+  SuppliersByRegionSkeleton
+} from '../components/shared/Skeleton';
+
+// Dynamic imports for sections below the fold
+const DealsSection = dynamic(() => import('../components/homepage/DealsSection'), {
+  loading: () => <DealsSectionSkeleton />
+});
+
+const HotOffers = dynamic(() => import('../components/homepage/HotOffers'), {
+  loading: () => <HotOffersSkeleton />
+});
+
+const CategoryBlock = dynamic(() => import('../components/homepage/CategoryBlock'), {
+  loading: () => <CategoryBlockSkeleton />
+});
+
+const QuoteRequestSection = dynamic(() => import('../components/homepage/QuoteRequestSection'), {
+  loading: () => <QuoteRequestSkeleton />
+});
+
+const RecommendedItems = dynamic(() => import('../components/homepage/RecommendedItems'), {
+  loading: () => <div className="space-y-6"><div className="h-8 w-48 bg-gray-200 rounded animate-pulse" /><ProductGridSkeleton count={5} /></div>
+});
+
+const ExtraServices = dynamic(() => import('../components/homepage/ExtraServices'), {
+  loading: () => <ExtraServicesSkeleton />
+});
+
+const SuppliersByRegion = dynamic(() => import('../components/homepage/SuppliersByRegion'), {
+  loading: () => <SuppliersByRegionSkeleton />
+});
+
+const NewsletterSection = dynamic(() => import('../components/homepage/NewsletterSection'), {
+  loading: () => <div className="h-64 bg-gray-100 rounded-xl animate-pulse" />
+});
 
 export default function Home() {
   return (
@@ -22,20 +58,15 @@ export default function Home() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
 
-        {/* Hero Section: Sidebar + Banner + User Panel */}
+        {/* Hero Section: Sidebar + Banner + User Panel - Static for SEO & LCP */}
         <section className="bg-white rounded-xl lg:rounded-2xl border border-gray-100 p-4 lg:p-5 shadow-sm">
           <div className="flex gap-4 lg:gap-5">
-            {/* Category Sidebar - Hidden on mobile */}
             <CategorySidebar />
-
-            {/* Hero Banner - Flexible width */}
             <div className="flex-1 min-w-0">
               <HeroBanner />
             </div>
 
-            {/* User Panel - Hidden on mobile/tablet */}
             <div className="w-56 hidden xl:flex flex-col gap-3 flex-shrink-0">
-              {/* User Greeting Card */}
               <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-4 border border-blue-100">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
@@ -58,7 +89,6 @@ export default function Home() {
                 </Link>
               </div>
 
-              {/* Promo Cards */}
               <div className="bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-xl p-4 flex-1 flex flex-col justify-center cursor-pointer hover:shadow-lg hover:shadow-orange-500/30 transition-all group">
                 <div className="flex items-center gap-2 mb-1">
                   <Gift className="w-5 h-5" />
@@ -80,60 +110,71 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Deals Section */}
+        {/* Following sections are loaded on demand as user scrolls */}
         <section>
-          <DealsSection />
+          <LazySection fallback={<DealsSectionSkeleton />}>
+            <DealsSection />
+          </LazySection>
         </section>
 
-        {/* Hot Offers */}
         <section>
-          <HotOffers />
+          <LazySection fallback={<HotOffersSkeleton />}>
+            <HotOffers />
+          </LazySection>
         </section>
 
-        {/* Category Block - Home and Outdoor */}
         <section>
-          <CategoryBlock
-            title="Home and Outdoor"
-            bgImage="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=1000&auto=format&fit=crop"
-            href="/categories/home-outdoor"
-          />
+          <LazySection fallback={<CategoryBlockSkeleton />}>
+            <CategoryBlock
+              title="Home and Outdoor"
+              bgImage="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?q=80&w=1000&auto=format&fit=crop"
+              href="/categories/home-outdoor"
+            />
+          </LazySection>
         </section>
 
-        {/* Category Block - Consumer Electronics */}
         <section>
-          <CategoryBlock
-            title="Consumer Electronics"
-            bgImage="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1000&auto=format&fit=crop"
-            href="/categories/electronics"
-          />
+          <LazySection fallback={<CategoryBlockSkeleton />}>
+            <CategoryBlock
+              title="Consumer Electronics"
+              bgImage="https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1000&auto=format&fit=crop"
+              href="/categories/electronics"
+            />
+          </LazySection>
         </section>
 
-        {/* Quote Request Section */}
         <section>
-          <QuoteRequestSection />
+          <LazySection fallback={<QuoteRequestSkeleton />}>
+            <QuoteRequestSection />
+          </LazySection>
         </section>
 
-        {/* Recommended Items */}
         <section>
-          <RecommendedItems />
+          <LazySection fallback={<div className="space-y-6"><div className="h-8 w-48 bg-gray-200 rounded animate-pulse" /><ProductGridSkeleton count={5} /></div>}>
+            <RecommendedItems />
+          </LazySection>
         </section>
 
-        {/* Extra Services */}
         <section>
-          <ExtraServices />
+          <LazySection fallback={<ExtraServicesSkeleton />}>
+            <ExtraServices />
+          </LazySection>
         </section>
 
-        {/* Suppliers by Region */}
         <section>
-          <SuppliersByRegion />
+          <LazySection fallback={<SuppliersByRegionSkeleton />}>
+            <SuppliersByRegion />
+          </LazySection>
         </section>
       </main>
 
-      {/* Footer Area */}
       <div className="mt-12">
-        <NewsletterSection />
+        <LazySection fallback={<div className="h-64 bg-gray-100 rounded-xl animate-pulse" />}>
+          <NewsletterSection />
+        </LazySection>
         <Footer />
       </div>
     </div>
   );
 }
+

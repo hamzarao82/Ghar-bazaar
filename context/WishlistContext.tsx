@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { Product, WishlistItem, WishlistState } from '@/types';
+import { useToast } from './ToastContext';
 
 // ==========================================
 // Types
@@ -128,13 +129,17 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
         }
     }, [state.items, state.isLoading]);
 
+    const { showToast } = useToast();
+
     // Actions
     const addToWishlist = (product: Product) => {
         dispatch({ type: 'ADD_TO_WISHLIST', payload: product });
+        showToast('Added to Wishlist!', 'success');
     };
 
     const removeFromWishlist = (productId: string) => {
         dispatch({ type: 'REMOVE_FROM_WISHLIST', payload: productId });
+        showToast('Removed from Wishlist', 'info');
     };
 
     const toggleWishlist = (product: Product) => {

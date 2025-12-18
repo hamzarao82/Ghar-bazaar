@@ -1,6 +1,4 @@
-"use client";
-
-import { useState } from 'react';
+import { Metadata } from 'next';
 import { ChevronRight, Grid3X3, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Header from '@/components/layout/Header';
@@ -8,9 +6,31 @@ import Topbar from '@/components/layout/Topbar';
 import Footer from '@/components/layout/Footer';
 import ProductCard from '@/components/shared/ProductCard';
 import { products, getProductsByCategory } from '@/data/products';
-import { getCategoryBySlug, categories } from '@/data/categories';
+import { getCategoryBySlug } from '@/data/categories';
 
-export default function CategoryPage({ params }: { params: { slug: string } }) {
+interface Props {
+    params: { slug: string };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const category = getCategoryBySlug(params.slug);
+    const categoryName = category?.name || params.slug
+        .split('-')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
+    return {
+        title: `${categoryName} | Ghar-Bazaar`,
+        description: category?.description || `Explore the best ${categoryName} products on Ghar-Bazaar.`,
+        openGraph: {
+            title: `${categoryName} | Ghar-Bazaar`,
+            description: category?.description,
+            images: category?.image ? [category.image] : [],
+        },
+    };
+}
+
+export default function CategoryPage({ params }: Props) {
     const category = getCategoryBySlug(params.slug);
     const categoryName = category?.name || params.slug
         .split('-')
@@ -80,7 +100,7 @@ export default function CategoryPage({ params }: { params: { slug: string } }) {
                     </div>
 
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-                        {subcategories.slice(0, 6).map((subcat, idx) => (
+                        {subcategories.slice(0, 6).map((subcat: any, idx: number) => (
                             <Link key={idx} href={`/search?category=${(subcat.slug || subcat.name).toLowerCase()}`}>
                                 <div className="group bg-white rounded-xl border border-gray-100 p-4 hover:shadow-lg hover:border-blue-100 transition-all duration-300 hover:-translate-y-1 cursor-pointer">
                                     <div className="aspect-square rounded-xl overflow-hidden bg-gray-50 mb-3">

@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { Product, Cart, CartItem } from '@/types';
+import { useToast } from './ToastContext';
 
 // ==========================================
 // Types
@@ -191,13 +192,20 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         localStorage.setItem('ghar-bazaar-cart', JSON.stringify(cart));
     }, [cart]);
 
+    const { showToast } = useToast();
+
     // Actions
     const addToCart = (product: Product, quantity: number = 1) => {
         dispatch({ type: 'ADD_TO_CART', payload: { product, quantity } });
+        showToast(`${product.name} added to cart!`, 'success');
     };
 
     const removeFromCart = (productId: string) => {
+        const item = cart.items.find(i => i.productId === productId);
         dispatch({ type: 'REMOVE_FROM_CART', payload: { productId } });
+        if (item) {
+            showToast(`${item.product.name} removed from cart`, 'info');
+        }
     };
 
     const updateQuantity = (productId: string, quantity: number) => {
@@ -206,6 +214,7 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
 
     const clearCart = () => {
         dispatch({ type: 'CLEAR_CART' });
+        showToast('Cart cleared', 'info');
     };
 
     const isInCart = (productId: string): boolean => {

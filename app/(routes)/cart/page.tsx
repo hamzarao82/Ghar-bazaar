@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Topbar from '@/components/layout/Topbar';
 import Footer from '@/components/layout/Footer';
+import EmptyState from '@/components/shared/EmptyState';
 import { useCart } from '@/context/CartContext';
 
 export default function CartPage() {
@@ -13,24 +14,17 @@ export default function CartPage() {
 
     if (cart.items.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50">
+            <div className="min-h-screen bg-gray-50 flex flex-col">
                 <Topbar />
                 <Header />
-                <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                    <div className="text-center">
-                        <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                            <ShoppingBag className="w-12 h-12 text-gray-400" />
-                        </div>
-                        <h1 className="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</h1>
-                        <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                            Looks like you haven't added any items yet. Start shopping to fill your cart with amazing products!
-                        </p>
-                        <Link href="/">
-                            <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/25">
-                                Continue Shopping
-                            </button>
-                        </Link>
-                    </div>
+                <main className="flex-1 flex items-center justify-center">
+                    <EmptyState
+                        icon={ShoppingBag}
+                        title="Your cart is empty"
+                        description="Looks like you haven't added any items yet. Start shopping to fill your cart with amazing products!"
+                        actionText="Start Shopping"
+                        actionHref="/"
+                    />
                 </main>
                 <Footer />
             </div>

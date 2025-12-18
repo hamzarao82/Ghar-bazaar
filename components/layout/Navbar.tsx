@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { ChevronDown, Menu, Sparkles, Flame, Gift, Briefcase, HelpCircle, Truck } from 'lucide-react';
 import { useState } from 'react';
+import { categories } from '@/data/categories';
 
 const Navbar = () => {
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -13,14 +14,11 @@ const Navbar = () => {
             href: '/categories',
             icon: Menu,
             hasDropdown: true,
-            dropdownItems: [
-                { label: 'Electronics', href: '/categories/electronics' },
-                { label: 'Fashion', href: '/categories/fashion' },
-                { label: 'Home & Garden', href: '/categories/home-garden' },
-                { label: 'Sports & Outdoor', href: '/categories/sports' },
-                { label: 'Automotive', href: '/categories/automotive' },
-                { label: 'Beauty & Health', href: '/categories/beauty-health' },
-            ]
+            dropdownItems: categories.slice(0, 8).map(cat => ({
+                label: cat.name,
+                href: `/categories/${cat.slug}`,
+                icon: cat.icon // optional, if we want to show it
+            }))
         },
         { label: 'Hot Offers', href: '/hot-offers', icon: Flame, highlight: true },
         { label: 'New Arrivals', href: '/new-arrivals', icon: Sparkles },
